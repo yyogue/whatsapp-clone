@@ -1,25 +1,22 @@
 import React from "react";
-import { auth, provider } from "../firebase";
+import { auth, provider } from "../firebase/firebase";
 import { signInWithPopup } from "firebase/auth";
 
-const Login = () => {
+const Login = ({ setUser }) => {
   const signIn = async () => {
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      setUser(result.user); // Store user info
     } catch (error) {
-      console.error("Error signing in:", error);
+      console.error("Login failed: ", error);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h2 className="text-2xl font-bold mb-4">Welcome to WhatsApp Clone</h2>
-      <button
-        onClick={signIn}
-        className="bg-green-500 text-white px-4 py-2 rounded"
-      >
-        Sign in with Google
-      </button>
+    <div className="login-container">
+      <h1>Welcome to WhatsApp Clone</h1>
+      <p>Sign in to start chatting with your friends!</p>
+      <button onClick={signIn}>Login with Google</button>
     </div>
   );
 };
